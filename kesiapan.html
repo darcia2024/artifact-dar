@@ -1,0 +1,435 @@
+<title>Kesiapan Sistem Underrated</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap">
+
+<style>
+  /* ── Palet diambil dari sistem desain proyek (theme.css), yang aslinya
+     diturunkan dari logo Underrated Barbershop. Bobot huruf berhenti di 600:
+     tidak ada huruf tebal di mana pun, sesuai ketentuan klien. Hierarki
+     dibangun dari ukuran, warna, jarak huruf, dan ruang kosong. ── */
+  :root {
+    --bg:           #F4F5F7;
+    --surface:      #FFFFFF;
+    --surface-sunk: #EDEFF2;
+    --border:       #E1E5EA;
+    --border-soft:  #EEF0F3;
+
+    --text:     #16181C;
+    --text-mid: #565C66;
+    --text-dim: #767D87;
+
+    --brand:      #BE0000;
+    --brand-wash: rgba(190, 0, 0, 0.06);
+    --brand-line: rgba(190, 0, 0, 0.24);
+
+    --ok:        #0F7355;
+    --ok-wash:   rgba(15, 115, 85, 0.09);
+    --ok-line:   rgba(15, 115, 85, 0.26);
+    --warn:      #8A5A00;
+    --warn-wash: rgba(138, 90, 0, 0.10);
+    --warn-line: rgba(138, 90, 0, 0.26);
+
+    --sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --w-reg: 400; --w-med: 500; --w-semi: 600;
+
+    --r-sm: 8px; --r-md: 12px; --r-lg: 18px;
+    --shadow-sm: 0 1px 2px rgba(22, 24, 28, 0.04);
+    --shadow-md: 0 4px 16px rgba(22, 24, 28, 0.06);
+  }
+
+  /* Ditulis tanpa CSS nesting: sarang di dalam :root masih baru, dan kalau
+     tidak dikenali seluruh blok gelap ini diabaikan diam-diam — hasilnya
+     teks terang di atas dasar terang. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:           #14161A;
+      --surface:      #1B1E23;
+      --surface-sunk: #23262C;
+      --border:       #2E323A;
+      --border-soft:  #24272D;
+
+      --text:     #ECEEF1;
+      --text-mid: #A8AEB8;
+      --text-dim: #838A95;
+
+      --brand:      #FF5A52;
+      --brand-wash: rgba(255, 90, 82, 0.10);
+      --brand-line: rgba(255, 90, 82, 0.30);
+
+      --ok:        #4FBF97;
+      --ok-wash:   rgba(79, 191, 151, 0.11);
+      --ok-line:   rgba(79, 191, 151, 0.30);
+      --warn:      #D9A441;
+      --warn-wash: rgba(217, 164, 65, 0.11);
+      --warn-line: rgba(217, 164, 65, 0.30);
+
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.30);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.34);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg:           #14161A;
+    --surface:      #1B1E23;
+    --surface-sunk: #23262C;
+    --border:       #2E323A;
+    --border-soft:  #24272D;
+
+    --text:     #ECEEF1;
+    --text-mid: #A8AEB8;
+    --text-dim: #838A95;
+
+    --brand:      #FF5A52;
+    --brand-wash: rgba(255, 90, 82, 0.10);
+    --brand-line: rgba(255, 90, 82, 0.30);
+
+    --ok:        #4FBF97;
+    --ok-wash:   rgba(79, 191, 151, 0.11);
+    --ok-line:   rgba(79, 191, 151, 0.30);
+    --warn:      #D9A441;
+    --warn-wash: rgba(217, 164, 65, 0.11);
+    --warn-line: rgba(217, 164, 65, 0.30);
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.30);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.34);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: var(--w-reg);
+    font-size: 15.5px;
+    line-height: 1.62;
+    margin: 0;
+    padding: clamp(28px, 6vw, 64px) clamp(18px, 5vw, 32px) 96px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 44px; }
+
+  h1, h2, h3, p, ul, ol { margin: 0; }
+  h1, h2, h3 { text-wrap: balance; font-weight: var(--w-semi); letter-spacing: -0.015em; }
+  strong, b { font-weight: var(--w-semi); }
+
+  /* ── Kepala ── */
+  .head { display: flex; flex-direction: column; gap: 14px; }
+  .eyebrow {
+    font-size: 11px; font-weight: var(--w-med);
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim);
+  }
+  .head h1 { font-size: clamp(29px, 5.4vw, 38px); line-height: 1.18; }
+  .lede { font-size: 17px; color: var(--text-mid); line-height: 1.55; max-width: 60ch; }
+  .rule { height: 2px; width: 34px; background: var(--brand); border-radius: 2px; }
+
+  /* ── Bagian ── */
+  section { display: flex; flex-direction: column; gap: 18px; }
+  section > h2 { font-size: 12px; font-weight: var(--w-med);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dim); }
+
+  /* ── Kartu keadaan. Garis kiri menandai tiga keadaan yang benar-benar ada:
+     harus dibereskan, sudah siap, bisa menyusul. Bukan hiasan. ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-sm);
+    padding: 20px 22px;
+    display: flex; flex-direction: column; gap: 11px;
+  }
+  .card.blok { border-left-color: var(--brand); box-shadow: var(--shadow-md); }
+  .card.siap { border-left-color: var(--ok); }
+  .card.nanti { border-left-color: var(--warn); }
+  .card h3 { font-size: 18px; line-height: 1.35; }
+  .card p { color: var(--text-mid); }
+
+  .chip {
+    align-self: flex-start;
+    font-size: 11px; font-weight: var(--w-med);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 100px;
+  }
+  .chip.blok  { color: var(--brand); background: var(--brand-wash); border: 1px solid var(--brand-line); }
+  .chip.siap  { color: var(--ok);    background: var(--ok-wash);    border: 1px solid var(--ok-line); }
+  .chip.nanti { color: var(--warn);  background: var(--warn-wash);  border: 1px solid var(--warn-line); }
+
+  .pilihan { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .pilihan > div {
+    background: var(--surface-sunk); border-radius: var(--r-sm);
+    padding: 12px 14px; font-size: 14.5px; color: var(--text-mid);
+  }
+  .pilihan strong { color: var(--text); }
+
+  /* ── Daftar siap ── */
+  .siap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(228px, 1fr)); gap: 12px; }
+  .siap-item {
+    background: var(--surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-md); padding: 15px 17px;
+    display: flex; flex-direction: column; gap: 3px; min-width: 0;
+  }
+  .siap-item .judul { font-size: 15px; font-weight: var(--w-med); display: flex; align-items: center; gap: 8px; }
+  .siap-item .judul::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ok); flex: none;
+  }
+  .siap-item .ket { font-size: 13.5px; color: var(--text-dim); line-height: 1.5; padding-left: 14px; }
+
+  /* ── Urutan besok pagi. Bernomor karena memang berurutan. ── */
+  ol.langkah { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 2px; counter-reset: l; }
+  ol.langkah li {
+    counter-increment: l;
+    display: grid; grid-template-columns: 30px 1fr; gap: 14px;
+    padding: 13px 0; border-bottom: 1px solid var(--border-soft); min-width: 0;
+  }
+  ol.langkah li:last-child { border-bottom: none; }
+  ol.langkah li::before {
+    content: counter(l);
+    font-size: 13px; font-weight: var(--w-med); color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--border);
+    display: grid; place-items: center; margin-top: 1px;
+  }
+  ol.langkah .apa { font-weight: var(--w-med); }
+  ol.langkah .kenapa { font-size: 14px; color: var(--text-dim); line-height: 1.5; }
+
+  /* ── Tabel data contoh ── */
+  .tabel-bungkus { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); }
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  th, td { text-align: left; padding: 11px 16px; border-bottom: 1px solid var(--border-soft); }
+  tr:last-child td { border-bottom: none; }
+  th { font-size: 11px; font-weight: var(--w-med); letter-spacing: 0.12em;
+       text-transform: uppercase; color: var(--text-dim); }
+  td.apa { font-weight: var(--w-med); white-space: nowrap; }
+  td.efek { color: var(--text-mid); }
+
+  /* ── Penutup ── */
+  .tutup {
+    border-top: 1px solid var(--border); padding-top: 22px;
+    display: flex; flex-direction: column; gap: 9px;
+  }
+  .tutup p { font-size: 14.5px; color: var(--text-dim); line-height: 1.6; }
+  .tutup .kunci { color: var(--text-mid); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="head">
+    <div class="eyebrow">Underrated Barbershop &middot; 29 Agustus 2026</div>
+    <h1>Semua siap dipakai besok, tidak ada yang menghalangi</h1>
+    <div class="rule"></div>
+    <p class="lede">
+      Kasir, struk, setoran kas, absensi, dan laporan owner sudah berjalan penuh dan
+      sudah diuji. Satu hal disetel sementara karena titik lokasi toko belum ada, dan
+      itu tidak menghambat apa pun besok.
+    </p>
+  </header>
+
+  <section>
+    <h2>Disetel sementara</h2>
+    <div class="card siap">
+      <span class="chip siap">Absensi jalan</span>
+      <h3>Pengecekan jarak dimatikan dulu</h3>
+      <p>
+        Biasanya sistem mengukur jarak ponsel capster ke toko sebelum mengizinkan absen.
+        Titik lokasi toko belum diisi &mdash; yang tersimpan masih titik tengah Jakarta &mdash;
+        jadi pengecekan jaraknya dimatikan dulu untuk sementara.
+      </p>
+      <p>
+        <strong>Absen tetap berjalan normal besok</strong>, lengkap dengan foto selfie dan
+        jam yang diambil dari server, bukan dari jam ponsel. Yang dilewati hanya
+        pengecekan posisinya.
+      </p>
+      <div class="pilihan">
+        <div>
+          <strong>Untuk menyalakannya kembali:</strong> kirim titik lokasi toko lewat
+          Google Maps (share &rarr; salin link). Cukup satu pengaturan diubah, tidak
+          perlu memasang ulang apa pun dan toko tidak perlu tutup.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Sudah siap dan sudah diuji</h2>
+    <div class="siap-grid">
+      <div class="siap-item">
+        <div class="judul">Daftar harga</div>
+        <div class="ket">6 layanan sesuai price list yang dikirim, dari Hairwash sampai Design Perm.</div>
+      </div>
+      <div class="siap-item">
+        <div class="judul">Capster &amp; kasir</div>
+        <div class="ket">Cena, Lukman, dan Wanda. Masing-masing punya PIN kasir dan akun capster sendiri.</div>
+      </div>
+      <div class="siap-item">
+        <div class="judul">Kasir &amp; struk</div>
+        <div class="ket">Pilih layanan, hitung kembalian, cetak struk, kirim lewat WhatsApp.</div>
+      </div>
+      <div class="siap-item">
+        <div class="judul">Setoran kas harian</div>
+        <div class="ket">Kasir menghitung fisik uang tanpa melihat angka sistem. Selisih hanya terlihat owner.</div>
+      </div>
+      <div class="siap-item">
+        <div class="judul">Laporan owner</div>
+        <div class="ket">Omzet, metode bayar, performa tiap capster, dan log transaksi.</div>
+      </div>
+      <div class="siap-item">
+        <div class="judul">Kartu member</div>
+        <div class="ket">Poin, riwayat, dan reward. Tautannya ikut tercetak di struk pelanggan.</div>
+      </div>
+      <div class="siap-item">
+        <div class="judul">Tetap jalan saat internet putus</div>
+        <div class="ket">Transaksi masuk antrean dan terkirim sendiri begitu sinyal balik.</div>
+      </div>
+      <div class="siap-item">
+        <div class="judul">Data bersih</div>
+        <div class="ket">Nol transaksi, nol pelanggan. Nota pertama besok benar-benar nomor 001.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Akun &amp; PIN</h2>
+    <div class="card nanti">
+      <span class="chip nanti">Dikirim terpisah</span>
+      <h3>Kredensial tidak dimuat di halaman ini</h3>
+      <p>
+        Email, kata sandi, dan PIN dikirim langsung ke masing-masing orang, tidak
+        ditulis di halaman yang bisa diteruskan. Satu halaman berisi semua akun
+        sama artinya dengan satu tautan yang membuka seluruh angka usaha.
+      </p>
+      <p>
+        Tiap capster hanya menerima PIN dan akunnya sendiri. Akun owner hanya
+        dipegang owner.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Besok pagi, urutannya</h2>
+    <ol class="langkah">
+      <li>
+        <div>
+          <div class="apa">Daftarkan mesin kasir</div>
+          <div class="kenapa">Login sekali saja dengan akun perangkat kasir. Setelah ini layar login tidak muncul lagi.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="apa">Kasir masukkan PIN</div>
+          <div class="kenapa">Ketik PIN lalu tekan OK. Nama yang muncul di kanan atas menentukan transaksi tercatat atas nama siapa.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="apa">Jualan seperti biasa</div>
+          <div class="kenapa">Pilih capster, pilih layanan, isi nomor WhatsApp pelanggan kalau mau ikut member, lalu proses.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="apa">Ganti kasir kalau tukar shift</div>
+          <div class="kenapa">Tekan nama di kanan atas, masukkan PIN yang baru. Jangan dibiarkan atas nama orang sebelumnya.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="apa">Tutup kas sebelum pulang</div>
+          <div class="kenapa">Hitung fisik uang tunai, masukkan jumlahnya. Sekali per hari, tidak bisa diulang.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="apa">Owner cek laporan</div>
+          <div class="kenapa">Buka dashboard owner. Di situ omzet hari itu dan selisih setoran kas terlihat.</div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Masih data contoh &mdash; aman dipakai, tapi angkanya belum benar</h2>
+    <div class="tabel-bungkus">
+      <table>
+        <thead>
+          <tr><th>Yang belum diisi</th><th>Akibatnya kalau dibiarkan</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="apa">Produk &amp; harga modal</td>
+            <td class="efek">Ada 5 produk contoh, modalnya masih nol. Laporan laba produk akan terlihat untung 100% &mdash; angkanya tidak bisa dipakai mengambil keputusan.</td>
+          </tr>
+          <tr>
+            <td class="apa">Daftar reward</td>
+            <td class="efek">6 reward contoh. Member bisa melihat hadiah yang belum tentu ada barangnya di toko.</td>
+          </tr>
+          <tr>
+            <td class="apa">Nilai poin</td>
+            <td class="efek">Sekarang Rp10.000 belanja = 1 poin, 1 poin = Rp500. Setara cashback 5%, maksimal potong 25% per transaksi.</td>
+          </tr>
+          <tr>
+            <td class="apa">Syarat naik tier</td>
+            <td class="efek">Silver sampai Black memakai ambang sementara.</td>
+          </tr>
+          <tr>
+            <td class="apa">Jam kerja &amp; cuti</td>
+            <td class="efek">Sekarang 09.00&ndash;21.00, telat ditoleransi 15 menit, cuti 12 hari setahun.
+              Perlu dicek sebelum besok: siapa pun yang absen lewat 09.15 otomatis tercatat
+              <em>terlambat</em>. Kalau jam bukanya ternyata bukan 09.00, laporan hari pertama
+              akan penuh keterangan terlambat padahal tidak ada yang telat.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card nanti">
+      <span class="chip nanti">Bisa menyusul</span>
+      <h3>Semua ini bisa diubah tanpa memperbaiki sistem</h3>
+      <p>
+        Angka poin, tier, jam kerja, produk, dan reward tersimpan sebagai data, bukan
+        tertanam di dalam program. Begitu keputusannya ada, tinggal diganti dan langsung
+        berlaku &mdash; toko tidak perlu tutup dan tidak ada yang perlu dipasang ulang.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Bulan ketiga</h2>
+    <div class="card nanti">
+      <span class="chip nanti">Sudah diputuskan, belum dibangun</span>
+      <h3>Bagi hasil 60&ndash;40</h3>
+      <p>
+        Aturannya sudah final: haircut dibagi langsung, Speciality dipotong 15% dulu untuk
+        bahan, cuci rambut flat Rp5.000 untuk capster, produk tidak ikut bagi hasil, dan
+        diskon poin ditanggung toko. Perhitungan otomatisnya baru diperlukan bulan ketiga.
+      </p>
+      <p>
+        Satu bagian sebaiknya dipasang lebih awal: pencatatan capster per layanan, bukan
+        per transaksi. Kalau baru dipasang nanti, dua bulan pertama tidak punya rinciannya,
+        padahal justru data dua bulan itu yang jadi pembanding paling jujur &mdash; selama
+        gaji masih flat, tidak ada seorang pun yang punya alasan mencatat tidak sesuai.
+      </p>
+    </div>
+  </section>
+
+  <footer class="tutup">
+    <p class="kunci">
+      Ringkasnya: besok bisa jualan, cetak struk, absen, dan tutup kas tanpa hambatan.
+      Yang tersisa cuma satu yang sebaiknya dicek pagi-pagi &mdash; pastikan jam buka
+      di sistem sama dengan jam buka sebenarnya, supaya hari pertama tidak tercatat
+      terlambat semua.
+    </p>
+    <p>
+      Kata sandi dan PIN dikirim terpisah, tidak dimuat di halaman ini.
+      Sebaiknya diganti sendiri oleh masing-masing orang setelah serah terima.
+    </p>
+  </footer>
+
+</div>

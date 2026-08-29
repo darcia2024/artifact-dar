@@ -1,0 +1,6 @@
+# Repositori ini publik. Berkas berisi kredensial tidak boleh masuk ke sini —
+# sekali ter-commit, ia terbaca siapa pun dan tidak dapat dicabut dengan
+# menghapusnya di commit berikutnya.
+KREDENSIAL.md
+kesiapan-lengkap.html
+*.env
