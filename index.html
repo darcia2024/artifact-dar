@@ -264,6 +264,33 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-s
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(46,139,87,.5)}50%{box-shadow:0 0 0 5px rgba(46,139,87,0)}}
 @keyframes blinkdot{0%,100%{opacity:.25}50%{opacity:1}}
 @media(prefers-reduced-motion:reduce){.feat *,.feat.play *{animation:none!important}}
+/* ponsel: grid kartu 2 kolom per baris, kartu ganjil terakhir selebar baris; jadwal jadi daftar */
+@media(max-width:600px){
+  .stats,.g2,.g3,.g4,.steps,.terms{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .stats>:last-child:nth-child(odd),.grid>:last-child:nth-child(odd),.steps>:last-child:nth-child(odd),.terms>:last-child:nth-child(odd){grid-column:1/-1}
+  .g2:has(.price){grid-template-columns:minmax(0,1fr)}
+  .panel{padding:22px 14px}
+  .card .eyebrow,.card .n,.terms .eyebrow{letter-spacing:.08em}
+  .stats{margin-top:32px}
+  .stat{min-height:0;gap:18px;padding:14px}
+  .stat b{font-size:1.7rem}
+  .card,.terms div{padding:14px;gap:8px;overflow-wrap:anywhere;hyphens:auto}
+  .card h3{font-size:1rem;line-height:1.25}
+  .card p,.card ul{font-size:.84rem}
+  .ic{width:30px;height:30px;margin-bottom:2px}
+  .terms b{font-size:1.15rem}
+  .terms span{font-size:.78rem}
+  .price{padding:16px;gap:10px}
+  .price p.big{font-size:1.5rem}
+  .price p{font-size:.84rem}
+  .tl{overflow:visible;padding:14px}
+  .tl-in{min-width:0}
+  .months{display:none}
+  .ph{display:block}
+  .ph .bar{grid-column:auto!important}
+  .ph .bar::before{content:attr(data-bulan);display:block;font-size:.7rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .ph .bar.dark::before{color:var(--accent)}
+}
 </style>
 </head>
 <body>
@@ -474,10 +501,10 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-s
   <div class="panel-head"><p class="eyebrow">Waktu pengerjaan: 9 bulan</p><h2>Hasil pertama sudah bisa dilihat di bulan 3-4</h2><p class="lead">Bapak/Ibu tidak perlu menunggu sampai akhir. Pembayaran dilakukan setiap kali satu fase selesai dan diterima, bukan per bulan.</p></div>
   <div class="tl"><div class="tl-in">
     <div class="months" aria-hidden="true"><span>Bulan 1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div>
-    <div class="ph"><div class="bar" style="grid-column:1/2"><b>Fase 0</b><span>Persiapan</span></div></div>
-    <div class="ph"><div class="bar" style="grid-column:2/5"><b>Fase 1 · Menyiapkan data</b><span>3-4 dinas pertama, hak akses</span><br><span class="flag">Layar keuangan dan serapan anggaran</span></div></div>
-    <div class="ph"><div class="bar" style="grid-column:4/8"><b>Fase 2 · Layar ringkasan dan AI</b><span>Semua dinas prioritas, tanya-jawab, saran</span></div></div>
-    <div class="ph"><div class="bar dark" style="grid-column:7/10"><b>Fase 3 · Uji coba dan serah terima</b><span>Uji bersama Sekda, uji keamanan, pelatihan</span></div></div>
+    <div class="ph"><div class="bar" data-bulan="Bulan 1" style="grid-column:1/2"><b>Fase 0</b><span>Persiapan</span></div></div>
+    <div class="ph"><div class="bar" data-bulan="Bulan 2-4" style="grid-column:2/5"><b>Fase 1 · Menyiapkan data</b><span>3-4 dinas pertama, hak akses</span><br><span class="flag">Layar keuangan dan serapan anggaran</span></div></div>
+    <div class="ph"><div class="bar" data-bulan="Bulan 4-7" style="grid-column:4/8"><b>Fase 2 · Layar ringkasan dan AI</b><span>Semua dinas prioritas, tanya-jawab, saran</span></div></div>
+    <div class="ph"><div class="bar dark" data-bulan="Bulan 7-9" style="grid-column:7/10"><b>Fase 3 · Uji coba dan serah terima</b><span>Uji bersama Sekda, uji keamanan, pelatihan</span></div></div>
   </div></div>
   <div class="grid g4" style="margin-top:14px">
     <div class="card"><span class="n">Fase 0 selesai jika</span><p>Sekda menyetujui daftar dinas prioritas dan 20-30 pertanyaan uji. Pilihan server disepakati bersama Diskominfo.</p></div>
