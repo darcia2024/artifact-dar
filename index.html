@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Penawaran Dar Dev untuk Pemerintah Kabupaten Gorontalo: Pandu Data Gorontalo, aplikasi pendukung keputusan pimpinan.">
+<title>Pandu Data Gorontalo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: panel-panel bersudut bulat ditumpuk di atas latar abu hangat, satu panel satu gagasan, dibaca dengan scroll. */
+:root{
+  --page:#DAD8D3; --surface:#F5F4EF; --card:#FFFFFF; --ink:#141414; --muted:#64635D; --line:#E2E0DA;
+  --accent:#E9F23A; --hero-a:#6E706D; --hero-b:#BDBDB8; --track:#EEEDE8; --bad:#B3402E;
+  --font:"Inter Tight","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font:400 17px/1.55 var(--font);padding-block:16px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.page{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+h1,h2,h3,p{margin:0}
+h1,h2{font-weight:400;letter-spacing:-.025em;text-wrap:balance}
+h1{font-size:clamp(2.5rem,5.4vw,4.3rem);line-height:1.05}
+h2{font-size:clamp(1.65rem,3vw,2.45rem);line-height:1.15;max-width:24ch}
+h3{font-size:1.15rem;font-weight:500;letter-spacing:-.01em;line-height:1.3}
+.eyebrow{font-size:.74rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.lead{color:var(--muted);max-width:58ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:10px;font:500 .92rem/1 var(--font);text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn-accent{background:var(--accent);color:var(--ink)}
+.btn-ghost{border-color:rgba(255,255,255,.7);color:#fff}
+.btn:focus-visible,.qs button:focus-visible,nav a:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+
+/* nav */
+nav{background:var(--card);border-radius:14px;padding:10px 12px 10px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:500;font-size:1.05rem;color:var(--ink);text-decoration:none}
+.logo svg{width:26px;height:26px}
+.links{display:flex;gap:28px}
+.links a{color:var(--muted);text-decoration:none;font-size:.9rem}
+.links a:hover{color:var(--ink)}
+@media(max-width:820px){.links{display:none}}
+
+/* panels */
+.panel{background:var(--surface);border-radius:20px;padding:clamp(28px,5vw,56px)}
+.panel-head{display:flex;flex-direction:column;gap:16px;margin-bottom:36px}
+.split-head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+
+/* hero */
+.hero{border-radius:20px;background:linear-gradient(120deg,var(--hero-a),var(--hero-b));color:#fff;padding:clamp(32px,6vw,72px) clamp(24px,5vw,48px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.95fr);gap:40px;align-items:center;overflow:hidden}
+@media(max-width:900px){.hero{grid-template-columns:minmax(0,1fr)}}
+.hero p.sub{color:rgba(255,255,255,.88);max-width:44ch;margin-top:22px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.trust{margin-top:40px;display:flex;align-items:center;gap:12px;font-size:.86rem;color:rgba(255,255,255,.9)}
+.trust b{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;font-weight:500;font-size:.78rem}
+.device{background:var(--card);color:var(--ink);border-radius:22px;padding:22px;box-shadow:0 30px 60px -20px rgba(20,20,20,.35);border:8px solid #2A2A28}
+.device .q{background:var(--surface);border-radius:12px;padding:12px 14px;font-size:.9rem}
+.device .t{font-size:.78rem;color:var(--muted);margin:16px 0 10px}
+.mini{display:grid;grid-template-columns:minmax(70px,auto) minmax(0,1fr) 34px;gap:6px 10px;align-items:center;font-size:.78rem}
+.mini .tr{height:10px;background:var(--track);border-radius:3px;position:relative}
+.mini .tr i{position:absolute;inset:0 auto 0 0;background:var(--ink);border-radius:3px}
+.mini .tr s{position:absolute;top:-4px;bottom:-4px;left:75%;width:2px;background:var(--bad)}
+.mini .low{color:var(--bad);font-weight:500}
+.device .rec{margin-top:16px;background:var(--accent);border-radius:12px;padding:12px 14px;font-size:.84rem}
+.device .rec span{display:block;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:56px}
+.stat{background:var(--card);border-radius:14px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;gap:40px;min-height:170px}
+.stat b{font-size:2.4rem;font-weight:400;letter-spacing:-.02em;line-height:1}
+
+/* generic cards */
+.grid{display:grid;gap:14px}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.card{background:var(--card);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card p{color:var(--muted);font-size:.95rem}
+.card .n{font-size:.74rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.ic{width:36px;height:36px;border-radius:10px;background:var(--accent);display:grid;place-items:center;margin-bottom:6px}
+.ic svg{width:18px;height:18px;stroke:var(--ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* demo */
+.demo{background:var(--card);border-radius:16px;overflow:hidden}
+.qs{display:flex;flex-wrap:wrap;gap:8px;padding:14px;border-bottom:1px solid var(--line)}
+.qs button{font:500 .9rem/1.35 var(--font);text-align:left;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;cursor:pointer;min-height:44px;flex:1 1 240px}
+.qs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.ans{padding:28px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px}
+@media(max-width:820px){.ans{grid-template-columns:minmax(0,1fr);padding:18px}}
+.sum{margin:6px 0 18px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-bottom:14px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.row{display:grid;grid-template-columns:minmax(90px,160px) minmax(0,1fr) 52px;gap:10px;align-items:center;margin-bottom:12px;font-size:.9rem}
+.track{position:relative;height:22px;background:var(--track);border-radius:4px}
+.track .b{position:absolute;inset:0 auto 0 0;background:var(--ink);border-radius:4px}
+.track .t{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--bad)}
+.track.pair{height:26px}
+.track.pair .b1,.track.pair .b2{position:absolute;left:0;height:12px;border-radius:3px}
+.track.pair .b1{top:0;background:#BDBBB4}
+.track.pair .b2{bottom:0;background:var(--ink)}
+.row .v{font-weight:500;font-size:.88rem;text-align:right;font-variant-numeric:tabular-nums}
+.row .v.low{color:var(--bad)}
+@media(max-width:560px){.row{grid-template-columns:minmax(0,1fr) 52px;gap:4px 10px}.row .nm{grid-column:1/-1}}
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.kpi{background:var(--surface);border-radius:12px;padding:14px}
+.kpi b{display:block;font-size:1.7rem;font-weight:400;letter-spacing:-.02em}
+.kpi span{font-size:.82rem;color:var(--muted)}
+.rec{background:var(--accent);border-radius:14px;padding:20px 22px;font-size:.94rem;align-self:start}
+.rec .tag{display:block;font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+.rec dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 16px}
+.rec dt{font-weight:600}
+.rec dd{margin:0}
+@media(max-width:560px){.rec dl{grid-template-columns:minmax(0,1fr);gap:2px}.rec dd{margin-bottom:10px}}
+.meta{margin-top:14px;font-size:.78rem;color:var(--muted)}
+.note{margin-top:14px;font-size:.84rem;color:var(--muted)}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+@media(max-width:1000px){.steps{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}}
+.steps .card:last-child{background:var(--ink);color:#fff}
+.steps .card:last-child p,.steps .card:last-child .n{color:rgba(255,255,255,.75)}
+
+/* statement */
+.statement{background:var(--ink);color:#fff;border-radius:20px;padding:clamp(36px,7vw,88px) clamp(24px,5vw,56px)}
+.statement .eyebrow{color:var(--accent)}
+.statement h2{max-width:22ch;margin-top:18px;font-size:clamp(2rem,4.4vw,3.4rem);line-height:1.08}
+.statement p{color:rgba(255,255,255,.75);margin-top:22px;max-width:52ch}
+
+/* timeline */
+.tl{overflow-x:auto;background:var(--card);border-radius:16px;padding:24px}
+.tl-in{min-width:640px}
+.months{display:grid;grid-template-columns:repeat(9,1fr);font-size:.78rem;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:14px}
+.months span{padding-left:6px;border-left:1px solid var(--line)}
+.ph{display:grid;grid-template-columns:repeat(9,1fr);margin-bottom:10px}
+.ph .bar{padding:10px 12px;border-radius:10px;background:var(--surface);border:1px solid var(--line);font-size:.86rem;line-height:1.35}
+.ph .bar b{display:block;font-weight:500}
+.ph .bar span{color:var(--muted);font-size:.8rem}
+.ph .bar.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ph .bar.dark span{color:rgba(255,255,255,.75)}
+.flag{display:inline-block;background:var(--accent);border-radius:6px;padding:4px 8px;font-size:.76rem;font-weight:500;margin-top:6px}
+
+/* table */
+.tablewrap{overflow-x:auto;background:var(--card);border-radius:16px}
+table{width:100%;border-collapse:collapse;font-size:.93rem;min-width:620px}
+th,td{text-align:left;padding:14px 18px;border-bottom:1px solid var(--line)}
+th{font-size:.72rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* price */
+.price{background:var(--card);border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:16px}
+.price.dark{background:var(--ink);color:#fff}
+.price p.big{color:inherit;font-size:clamp(2.2rem,5vw,3.4rem);font-weight:400;letter-spacing:-.03em;line-height:1;overflow-wrap:anywhere}
+.price p{color:var(--muted);font-size:.95rem}
+.price.dark p{color:rgba(255,255,255,.75)}
+.price.dark .eyebrow{color:var(--accent)}
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:14px}
+.terms div{background:var(--card);border-radius:14px;padding:18px}
+.terms b{display:block;font-size:1.5rem;font-weight:400;letter-spacing:-.02em}
+.terms span{font-size:.86rem;color:var(--muted)}
+
+/* list cards */
+.card ul{margin:0;padding-left:1.1em;color:var(--muted);font-size:.95rem;display:flex;flex-direction:column;gap:6px}
+
+/* closing */
+.closing{background:var(--accent);border-radius:20px;padding:clamp(36px,7vw,80px) clamp(24px,5vw,56px);display:flex;flex-direction:column;gap:20px}
+.closing h2{font-size:clamp(2rem,4.4vw,3.4rem);line-height:1.08;max-width:20ch}
+.closing p{max-width:58ch}
+.closing .who{font-weight:500;margin-top:12px}
+footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.8rem;color:var(--muted);padding:8px 6px}
+
+.card.dark{background:var(--ink);color:#fff}
+.card.dark p,.card.dark .n{color:rgba(255,255,255,.78)}
+.card.dark .n{color:var(--accent)}
+.card.dark ul{color:rgba(255,255,255,.82)}
+.card.ok{border-top:4px solid #2E8B57}
+.card.wait{border-top:4px solid #C98A00}
+
+/* feature mockups */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+@media(max-width:420px){.feat-grid{grid-template-columns:minmax(0,1fr)}}
+.feat{background:var(--card);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.feat .txt{padding:4px 10px 12px;display:flex;flex-direction:column;gap:8px}
+.feat .txt p{color:var(--muted);font-size:.95rem}
+.screen{background:var(--surface);border-radius:12px;min-height:330px;padding:14px;overflow:hidden;position:relative;font-size:.8rem;display:flex;flex-direction:column;gap:10px}
+.stop{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.72rem;color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px 9px;font-size:.7rem;color:var(--ink);white-space:nowrap}
+.chip.acc{background:var(--accent);border-color:var(--accent);font-weight:600}
+.dot{width:7px;height:7px;border-radius:50%;background:#2E8B57;flex:none}
+.feat.play .dot{animation:pulse 1.4s ease-in-out infinite}
+/* chat */
+#f-chat .screen{height:330px}
+.msgs{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;overflow:hidden}
+.bu{align-self:flex-end;background:var(--ink);color:#fff;border-radius:12px 12px 4px 12px;padding:8px 11px;max-width:86%}
+.ba{align-self:flex-start;background:var(--card);border-radius:12px 12px 12px 4px;padding:10px 12px;width:94%;display:flex;flex-direction:column;gap:7px}
+.ba.warn{background:#FFF1CC}
+.ba small{font-size:.68rem;color:var(--muted)}
+.mbar{display:grid;grid-template-columns:64px minmax(0,1fr) 32px;gap:8px;align-items:center;font-size:.72rem}
+.mbar .tr{height:8px;background:var(--track);border-radius:3px;overflow:hidden}
+.mbar .tr i{display:block;height:100%;background:var(--ink);border-radius:3px;transform-origin:left}
+.mbar .low{color:var(--bad);font-weight:600}
+.new{animation:rise .4s ease both}
+.ba.new .tr i{animation:growx .9s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--d,.2s)}
+.typing{align-self:flex-start;display:flex;gap:4px;padding:11px 12px;background:var(--card);border-radius:12px}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:blinkdot 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+.inbar{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 6px 6px 12px;display:flex;align-items:center;gap:8px;min-height:38px}
+.inbar .in{flex:1;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inbar .in.on{color:var(--ink)}
+.inbar .send{width:26px;height:26px;border-radius:7px;background:var(--accent);display:grid;place-items:center;flex:none}
+.inbar .send svg{width:14px;height:14px;stroke:var(--ink);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+/* dashboard */
+.kgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.k{background:var(--card);border-radius:10px;padding:10px 12px}
+.k b{display:block;font-size:1.4rem;font-weight:400;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.k span{font-size:.68rem;color:var(--muted)}
+.cols{flex:1;display:flex;align-items:flex-end;gap:6px;background:var(--card);border-radius:10px;padding:10px 12px 8px;position:relative}
+.cols i{flex:1;background:var(--ink);border-radius:3px 3px 0 0;transform-origin:bottom}
+.cols i.cur{background:var(--accent);box-shadow:inset 0 0 0 1px var(--ink)}
+.cols em{position:absolute;left:12px;top:8px;font-style:normal;font-size:.66rem;color:var(--muted)}
+.feat.play .cols i{animation:growy .8s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--d,0s)}
+.feat.play .k{animation:rise .5s ease both;animation-delay:var(--d,0s)}
+/* dinas */
+.ringbox{display:flex;gap:14px;align-items:center;background:var(--card);border-radius:10px;padding:12px}
+.ringbox svg{width:76px;height:76px;flex:none;transform:rotate(-90deg)}
+.ringbox .fg{stroke-dasharray:213.6;stroke-dashoffset:111.1}
+.feat.play .ringbox .fg{animation:ring 1.2s cubic-bezier(.2,.7,.2,1) both}
+.ringbox b{display:block;font-size:1.6rem;font-weight:400;letter-spacing:-.02em}
+.ringbox span{font-size:.72rem;color:var(--muted)}
+.keg{background:var(--card);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.keg .mbar{grid-template-columns:minmax(0,1fr) 70px 32px}
+.feat.play .keg .tr i{animation:growx .9s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--d,0s)}
+.locked{display:flex;align-items:center;gap:8px;border-radius:10px;padding:9px 12px;color:var(--muted);font-size:.74rem;background:repeating-linear-gradient(135deg,#ECEBE6 0 6px,#F5F4EF 6px 12px);border:1px dashed #CFCDC6}
+.locked svg{width:14px;height:14px;stroke:var(--muted);fill:none;stroke-width:2}
+/* saran */
+.alert{background:var(--card);border-radius:10px;padding:9px 12px;border-left:4px solid var(--c);display:flex;flex-direction:column;gap:3px}
+.alert .h{display:flex;justify-content:space-between;gap:8px;font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.alert b{font-weight:500;font-size:.82rem}
+.alert span.s{font-size:.72rem;color:var(--muted)}
+.feat.play .alert{animation:slidein .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--d,0s)}
+/* perkiraan */
+.fc{flex:1;background:var(--card);border-radius:10px;padding:8px 8px 4px}
+.fc svg{width:100%;height:100%;display:block}
+.fc .actual{stroke-dasharray:1;stroke-dashoffset:0}
+.feat.play .fc .actual{animation:draw 1.4s ease-out both}
+.feat.play .fc .later{animation:fadein .6s ease both;animation-delay:1.35s}
+.legend2{display:flex;gap:14px;flex-wrap:wrap;font-size:.7rem;color:var(--muted)}
+.legend2 i{display:inline-block;width:14px;height:3px;margin-right:6px;vertical-align:3px;background:var(--ink)}
+.legend2 i.dash{background:repeating-linear-gradient(90deg,var(--ink) 0 4px,transparent 4px 7px)}
+.legend2 i.band{height:8px;vertical-align:0;background:var(--accent)}
+/* asal data */
+.src{background:var(--card);border-radius:10px;padding:10px 12px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:5px 12px;font-size:.75rem;margin:0}
+.src dt{color:var(--muted)}
+.src dd{margin:0;display:flex;align-items:center;gap:6px}
+.logs{display:flex;flex-direction:column;gap:6px}
+.logrow{display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:7px 10px;background:var(--card);border-radius:8px;font-size:.74rem}
+.logrow span:first-child{color:var(--muted);font-variant-numeric:tabular-nums}
+.feat.play .logrow{animation:rise .45s ease both;animation-delay:var(--d,0s)}
+@keyframes growx{from{transform:scaleX(0)}}
+@keyframes growy{from{transform:scaleY(0)}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+@keyframes slidein{from{opacity:0;transform:translateX(28px)}}
+@keyframes draw{from{stroke-dashoffset:1}}
+@keyframes fadein{from{opacity:0}}
+@keyframes ring{from{stroke-dashoffset:213.6}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(46,139,87,.5)}50%{box-shadow:0 0 0 5px rgba(46,139,87,0)}}
+@keyframes blinkdot{0%,100%{opacity:.25}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.feat *,.feat.play *{animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<nav aria-label="Navigasi">
+  <a class="logo" href="#atas">
+    <svg viewBox="0 0 26 26" aria-hidden="true"><rect x="3" y="13" width="4.5" height="10" rx="1.2" fill="#141414"/><rect x="10.75" y="8" width="4.5" height="15" rx="1.2" fill="#141414"/><rect x="18.5" y="3" width="4.5" height="20" rx="1.2" fill="#141414"/></svg>
+    Pandu Data
+  </a>
+  <div class="links"><a href="#paham">Kebutuhan</a><a href="#fitur">Fitur</a><a href="#contoh">Contoh</a><a href="#cara">Cara kerja</a><a href="#jadwal">Jadwal</a><a href="#biaya">Biaya</a><a href="PRD">PRD</a></div>
+  <a class="btn btn-accent" href="#biaya">Mulai Fase 0</a>
+</nav>
+
+<header class="hero" id="atas">
+  <div>
+    <h1>Bapak/Ibu bertanya.<br>Datanya menjawab.</h1>
+    <p class="sub">Kami, Dar Dev, menawarkan pembuatan Pandu Data Gorontalo: aplikasi tempat pimpinan cukup mengetik pertanyaan, lalu mendapat grafik, penjelasan singkat, dan saran tindak lanjut, lengkap dengan asal datanya.</p>
+    <div class="ctas"><a class="btn btn-accent" href="#biaya">Lihat usulan biaya</a><a class="btn btn-ghost" href="#contoh">Coba contohnya</a><a class="btn btn-ghost" href="PRD">Baca PRD</a></div>
+    <div class="trust"><b>10-12</b>Dinas prioritas Pemerintah Kabupaten Gorontalo</div>
+  </div>
+  <div class="device" aria-label="Contoh tampilan aplikasi di tablet">
+    <p class="q">OPD mana yang serapan anggarannya paling rendah dibanding target triwulan ini?</p>
+    <p class="t">Serapan belanja per OPD · garis merah = target 75%</p>
+    <div class="mini">
+      <span>Dinas PU</span><span class="tr"><i style="width:48%"></i><s></s></span><span class="low">48%</span>
+      <span>Pertanian</span><span class="tr"><i style="width:55%"></i><s></s></span><span class="low">55%</span>
+      <span>Kesehatan</span><span class="tr"><i style="width:62%"></i><s></s></span><span class="low">62%</span>
+      <span>Pendidikan</span><span class="tr"><i style="width:71%"></i><s></s></span><span>71%</span>
+    </div>
+    <div class="rec"><span>Saran, bukan keputusan</span>Minta Dinas PU memaparkan kendala paket pekerjaan yang belum berjalan.</div>
+  </div>
+</header>
+
+<section class="panel" id="paham">
+  <div class="split-head">
+    <div class="panel-head" style="margin:0">
+      <p class="eyebrow">Pandu Data Gorontalo</p>
+      <h2>Satu aplikasi tempat Sekda cukup mengetik pertanyaan, lalu mendapat jawaban yang bisa dipercaya.</h2>
+    </div>
+    <p class="lead" style="max-width:34ch">Ukuran keberhasilannya sederhana: Sekda bisa memakainya sendiri, tanpa didampingi.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><p class="eyebrow">Dinas prioritas tersambung</p><b>10-12</b></div>
+    <div class="stat"><p class="eyebrow">Waktu pengerjaan</p><b>9 bulan</b></div>
+    <div class="stat"><p class="eyebrow">Hasil pertama terlihat</p><b>Bulan 3-4</b></div>
+  </div>
+</section>
+
+<section class="panel" id="prinsip">
+  <div class="panel-head"><p class="eyebrow">Yang kami pegang</p><h2>Enam prinsip agar mudah dipakai pimpinan</h2></div>
+  <div class="grid g3">
+    <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg></span><h3>Cukup satu kotak</h3><p>Ketik pertanyaan seperti biasa, tanpa menu yang membingungkan.</p></div>
+    <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg></span><h3>Jawaban berupa gambar</h3><p>Grafik atau tabel singkat, ditambah 2-3 kalimat penjelasan.</p></div>
+    <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span><h3>Jelas asal-usulnya</h3><p>Setiap angka menunjukkan asal data dan kapan terakhir diperbarui.</p></div>
+    <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><h3>Pimpinan yang memutuskan</h3><p>Aplikasi hanya memberi saran dan tidak menjalankan apa pun sendiri.</p></div>
+    <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg></span><h3>Terus terang saat data kurang</h3><p>Kalau datanya belum ada, aplikasi akan bilang, bukan menebak.</p></div>
+    <div class="card"><span class="ic"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M11 18h2"/></svg></span><h3>Enak di tablet dan ponsel</h3><p>Tetap bisa dibuka di komputer juga.</p></div>
+  </div>
+</section>
+
+<section class="panel" id="fitur">
+  <div class="panel-head"><p class="eyebrow">Fitur aplikasi</p><h2>Seperti inilah tampilan Pandu Data nanti</h2><p class="lead">Semua angka di tampilan ini contoh, bukan data Pemkab Gorontalo. Tampilan akhirnya kita rancang bersama Sekda di Fase 0.</p></div>
+  <div class="feat-grid">
+
+    <article class="feat" id="f-chat">
+      <div class="screen" aria-label="Contoh tampilan tanya-jawab">
+        <div class="stop"><span>Tanya Pandu Data</span><span class="chip"><span class="dot"></span>Data terbaru 06.00</span></div>
+        <div class="msgs" id="chatMsgs">
+          <div class="bu">OPD mana yang serapannya paling rendah triwulan ini?</div>
+          <div class="ba"><span>Dinas PU paling rendah: 48% dari target 75%.</span>
+            <div class="mbar"><span>Dinas PU</span><span class="tr"><i style="width:48%"></i></span><span class="low">48%</span></div>
+            <div class="mbar"><span>Pertanian</span><span class="tr"><i style="width:55%"></i></span><span class="low">55%</span></div>
+            <div class="mbar"><span>Kesehatan</span><span class="tr"><i style="width:62%"></i></span><span class="low">62%</span></div>
+            <small>Sumber: realisasi belanja OPD</small></div>
+        </div>
+        <div class="inbar"><span class="in" id="chatIn">Ketik pertanyaan...</span><span class="send"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></div>
+      </div>
+      <div class="txt"><h3>Tanya-jawab bahasa sehari-hari</h3><p>Ketik pertanyaan seperti mengirim pesan. Jawaban muncul dengan grafik dan asal datanya. Kalau datanya belum ada, aplikasi bilang terus terang.</p></div>
+    </article>
+
+    <article class="feat" id="f-dash">
+      <div class="screen" aria-label="Contoh layar ringkasan pimpinan">
+        <div class="stop"><span>Ringkasan Daerah · Triwulan III 2026</span><span class="chip">Sekda</span></div>
+        <div class="kgrid">
+          <div class="k" style="--d:.05s"><b data-count="68" data-suf="%">68%</b><span>Pendapatan terhadap target</span></div>
+          <div class="k" style="--d:.15s"><b data-count="61" data-suf="%">61%</b><span>Belanja terhadap pagu</span></div>
+          <div class="k" style="--d:.25s"><b data-count="7" data-suf=" dari 10">7 dari 10</b><span>Program prioritas sesuai jadwal</span></div>
+          <div class="k" style="--d:.35s"><b data-count="4215" data-suf="">4.215</b><span>ASN aktif · 38 pensiun tahun ini</span></div>
+        </div>
+        <div class="cols" aria-label="Serapan kumulatif Januari sampai September"><em>Serapan kumulatif Jan-Sep</em>
+          <i style="height:4%;--d:.3s"></i><i style="height:11%;--d:.36s"></i><i style="height:21%;--d:.42s"></i><i style="height:34%;--d:.48s"></i><i style="height:44%;--d:.54s"></i><i style="height:56%;--d:.6s"></i><i style="height:67%;--d:.66s"></i><i style="height:77%;--d:.72s"></i><i class="cur" style="height:87%;--d:.78s"></i>
+        </div>
+      </div>
+      <div class="txt"><h3>Layar ringkasan pimpinan</h3><p>Pendapatan, belanja, serapan, program prioritas, dan kepegawaian dalam satu layar. Bisa disaring per periode dan dibandingkan dengan tahun lalu.</p></div>
+    </article>
+
+    <article class="feat" id="f-dinas">
+      <div class="screen" aria-label="Contoh layar khusus dinas">
+        <div class="stop"><span>Dinas Pekerjaan Umum</span><span class="chip"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#141414" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Hanya data dinas ini</span></div>
+        <div class="ringbox">
+          <svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="34" fill="none" stroke="#EEEDE8" stroke-width="9"/><circle class="fg" cx="40" cy="40" r="34" fill="none" stroke="#141414" stroke-width="9" stroke-linecap="round"/></svg>
+          <div><b data-count="48" data-suf="%">48%</b><span>Serapan anggaran, target triwulan 75%</span></div>
+        </div>
+        <div class="keg">
+          <div class="mbar"><span>Rehabilitasi jalan kabupaten</span><span class="tr"><i style="width:62%;--d:.2s"></i></span><span>62%</span></div>
+          <div class="mbar"><span>Normalisasi saluran irigasi</span><span class="tr"><i style="width:44%;--d:.35s"></i></span><span>44%</span></div>
+          <div class="mbar"><span>Pembangunan jembatan desa</span><span class="tr"><i style="width:31%;--d:.5s"></i></span><span class="low">31%</span></div>
+        </div>
+        <div class="locked"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Data dinas lain di luar kewenangan</div>
+      </div>
+      <div class="txt"><h3>Layar khusus tiap dinas</h3><p>Kepala dinas melihat capaian dan serapan dinasnya sendiri. Data dinas lain tidak bisa dibuka.</p></div>
+    </article>
+
+    <article class="feat" id="f-saran">
+      <div class="screen" aria-label="Contoh saran otomatis">
+        <div class="stop"><span>Perlu perhatian hari ini</span><span class="chip acc">Saran, bukan keputusan</span></div>
+        <div class="alert" style="--c:#B3402E;--d:.05s"><div class="h"><span>Serapan rendah</span><span>Yakin: tinggi</span></div><b>Dinas PU 27 poin di bawah target</b><span class="s">Saran: minta paparan kendala paket pekerjaan</span></div>
+        <div class="alert" style="--c:#C98A00;--d:.3s"><div class="h"><span>Pendapatan di bawah biasanya</span><span>Yakin: sedang</span></div><b>Retribusi turun 13% dari tahun lalu</b><span class="s">Saran: tinjau penagihan retribusi</span></div>
+        <div class="alert" style="--c:#6E706D;--d:.55s"><div class="h"><span>Data janggal</span><span>Perlu dicek</span></div><b>Laporan satu dinas naik 300% dalam sehari</b><span class="s">Saran: cocokkan dengan penanggung jawab data</span></div>
+      </div>
+      <div class="txt"><h3>Saran otomatis</h3><p>Peringatan muncul saat serapan rendah, pendapatan di bawah biasanya, atau ada data yang janggal. Setiap saran memuat bukti dan tingkat keyakinan.</p></div>
+    </article>
+
+    <article class="feat" id="f-perkiraan">
+      <div class="screen" aria-label="Contoh perkiraan akhir tahun">
+        <div class="stop"><span>Perkiraan serapan akhir tahun</span><span class="chip">2026</span></div>
+        <div class="fc">
+          <svg viewBox="0 0 300 172" role="img" aria-label="Serapan kumulatif Januari sampai September naik ke 61 persen, diperkirakan 93 persen pada Desember dengan rentang 89 sampai 96 persen, di bawah target 95 persen">
+            <line x1="14" y1="140" x2="292" y2="140" stroke="#E2E0DA"/><line x1="14" y1="80" x2="292" y2="80" stroke="#E2E0DA" stroke-dasharray="2 3"/>
+            <text x="14" y="76" font-size="9" fill="#64635D">50%</text>
+            <line x1="14" y1="26" x2="292" y2="26" stroke="#B3402E" stroke-width="1.2" stroke-dasharray="5 4"/>
+            <text x="14" y="21" font-size="9" fill="#B3402E">Target 95%</text>
+            <g class="later"><polygon points="212,66.8 236,51.2 260,36.8 284,24.8 284,33.2 260,44 236,56" fill="#E9F23A" opacity=".85"/>
+            <path d="M212 66.8 L236 53.6 L260 40.4 L284 28.4" fill="none" stroke="#141414" stroke-width="2" stroke-dasharray="4 4"/>
+            <circle cx="284" cy="28.4" r="3.5" fill="#141414"/><text x="292" y="14" font-size="10" fill="#141414" text-anchor="end" font-weight="600">Des: 93% (89-96%)</text></g>
+            <path class="actual" pathLength="1" d="M20 136.4 L44 130.4 L68 122 L92 111.2 L116 102.8 L140 93.2 L164 83.6 L188 75.2 L212 66.8" fill="none" stroke="#141414" stroke-width="2.5" stroke-linejoin="round"/>
+            <circle cx="212" cy="66.8" r="3.5" fill="#141414"/><text x="214" y="92" font-size="10" fill="#141414" text-anchor="middle">Sep: 61%</text>
+            <text x="20" y="160" font-size="9" fill="#64635D" text-anchor="middle">Jan</text><text x="92" y="160" font-size="9" fill="#64635D" text-anchor="middle">Apr</text><text x="164" y="160" font-size="9" fill="#64635D" text-anchor="middle">Jul</text><text x="236" y="160" font-size="9" fill="#64635D" text-anchor="middle">Okt</text><text x="284" y="160" font-size="9" fill="#64635D" text-anchor="middle">Des</text>
+          </svg>
+        </div>
+        <div class="legend2"><span><i></i>Realisasi</span><span><i class="dash"></i>Perkiraan</span><span><i class="band"></i>Rentang perkiraan</span></div>
+      </div>
+      <div class="txt"><h3>Perkiraan akhir tahun</h3><p>Perkiraan serapan dan pendapatan sampai Desember, lengkap dengan rentangnya, berdasarkan pola bulan-bulan sebelumnya.</p></div>
+    </article>
+
+    <article class="feat" id="f-asal">
+      <div class="screen" aria-label="Contoh asal data dan catatan akses">
+        <div class="stop"><span>Asal angka “Serapan 48%”</span><span class="chip"><span class="dot"></span>Terbaru</span></div>
+        <dl class="src">
+          <dt>Sumber</dt><dd>Aplikasi keuangan daerah</dd>
+          <dt>Diperbarui</dt><dd>24 Okt 2026, 06.00</dd>
+          <dt>Cara hitung</dt><dd>Realisasi dibagi pagu belanja</dd>
+          <dt>Mutu data</dt><dd>Lengkap, tidak ada yang janggal</dd>
+        </dl>
+        <p class="stop" style="margin-top:2px"><span>Catatan akses hari ini</span></p>
+        <div class="logs">
+          <div class="logrow" style="--d:.1s"><span>08.12</span><span>Sekda membuka Ringkasan Daerah</span></div>
+          <div class="logrow" style="--d:.3s"><span>08.15</span><span>Kepala Dinas PU membuka layar dinasnya</span></div>
+          <div class="logrow" style="--d:.5s"><span>08.21</span><span>Sekda menyimpan PDF untuk rapat pimpinan</span></div>
+        </div>
+      </div>
+      <div class="txt"><h3>Asal data dan catatan akses</h3><p>Setiap angka menunjukkan sumber dan waktu pembaruannya. Siapa membuka apa dan kapan tercatat, termasuk simpan PDF untuk bahan rapat.</p></div>
+    </article>
+
+  </div>
+</section>
+
+<section class="panel" id="contoh">
+  <div class="panel-head"><p class="eyebrow">Coba sendiri</p><h2>Klik salah satu pertanyaan</h2><p class="lead">Tiga pertanyaan ini berasal dari brief Bapak/Ibu. Pertanyaan seperti inilah yang nanti kita pakai untuk menguji apakah aplikasi sudah menjawab dengan benar.</p></div>
+  <div class="demo"><div class="qs" id="qs"></div><div class="ans" id="ans" aria-live="polite"></div></div>
+  <p class="note">Semua angka di contoh ini kami buat sendiri untuk menunjukkan bentuk jawabannya. Ini bukan data Pemkab Gorontalo.</p>
+</section>
+
+<section class="panel" id="cara">
+  <div class="panel-head"><p class="eyebrow">Cara kerjanya</p><h2>Dari data dinas sampai layar pimpinan, dalam lima langkah</h2></div>
+  <div class="steps">
+    <div class="card"><span class="n">Langkah 1</span><h3>Data dari dinas</h3><p>Aplikasi dan Excel tiap dinas, ditambah jalur data pemda yang sudah ada.</p></div>
+    <div class="card"><span class="n">Langkah 2</span><h3>Dirapikan setiap hari</h3><p>Kode dinas, program, dan periode diseragamkan, lalu diperbarui otomatis.</p></div>
+    <div class="card"><span class="n">Langkah 3</span><h3>Satu tempat, satu cara hitung</h3><p>Setiap ukuran punya satu cara hitung, jadi angkanya selalu sama di layar mana pun.</p></div>
+    <div class="card"><span class="n">Langkah 4</span><h3>Menjawab dan memberi saran</h3><p>Pertanyaan diubah menjadi perhitungan atas data resmi.</p></div>
+    <div class="card"><span class="n">Langkah 5</span><h3>Layar ringkasan</h3><p>Pimpinan melihat seluruh daerah. Dinas melihat datanya sendiri.</p></div>
+  </div>
+</section>
+
+<section class="statement">
+  <p class="eyebrow">Prinsip utama</p>
+  <h2>AI hanya membantu memahami pertanyaan. Angkanya selalu dari data resmi.</h2>
+  <p>Aplikasi tidak mengarang angka. Setiap jawaban bisa ditelusuri ke sumber datanya.</p>
+</section>
+
+<section class="panel" id="aman">
+  <div class="panel-head"><p class="eyebrow">Keamanan data</p><h2>Data tetap di Indonesia. Data pribadi tidak dibawa keluar.</h2></div>
+  <div class="grid g4">
+    <div class="card"><h3>Hak akses sesuai jabatan</h3><p>Sekda, Bupati, dan kepala dinas. Kepala dinas hanya melihat data dinasnya.</p></div>
+    <div class="card"><h3>Semua akses tercatat</h3><p>Siapa membuka data apa dan kapan, termasuk setiap pertanyaan, bisa diperiksa.</p></div>
+    <div class="card"><h3>Data terkunci</h3><p>Data disimpan dan dikirim dalam keadaan terenkripsi.</p></div>
+    <div class="card"><h3>Diuji pihak luar</h3><p>Keamanannya diuji pihak independen sebelum aplikasi dipakai.</p></div>
+    <div class="card"><h3>Server di Indonesia</h3><p>Pusat data pemda, Pusat Data Nasional, atau penyedia dalam negeri. Dipilih bersama Diskominfo.</p></div>
+    <div class="card"><h3>AI tidak melihat data pribadi</h3><p>AI hanya menerima angka ringkasan. Data pegawai dan penerima bantuan tetap di server pemda.</p></div>
+    <div class="card"><h3>Sesuai UU Pelindungan Data Pribadi</h3><p>Data yang terpaksa dikirim dikurangi seperlunya atau disamarkan.</p></div>
+    <div class="card"><h3>Siap untuk aturan baru</h3><p>Perpres tentang AI belum terbit. Aplikasi dibuat supaya mudah diubah saat aturan itu keluar.</p></div>
+  </div>
+</section>
+
+<section class="panel" id="jadwal">
+  <div class="panel-head"><p class="eyebrow">Waktu pengerjaan: 9 bulan</p><h2>Hasil pertama sudah bisa dilihat di bulan 3-4</h2><p class="lead">Bapak/Ibu tidak perlu menunggu sampai akhir. Pembayaran dilakukan setiap kali satu fase selesai dan diterima, bukan per bulan.</p></div>
+  <div class="tl"><div class="tl-in">
+    <div class="months" aria-hidden="true"><span>Bulan 1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div>
+    <div class="ph"><div class="bar" style="grid-column:1/2"><b>Fase 0</b><span>Persiapan</span></div></div>
+    <div class="ph"><div class="bar" style="grid-column:2/5"><b>Fase 1 · Menyiapkan data</b><span>3-4 dinas pertama, hak akses</span><br><span class="flag">Layar keuangan dan serapan anggaran</span></div></div>
+    <div class="ph"><div class="bar" style="grid-column:4/8"><b>Fase 2 · Layar ringkasan dan AI</b><span>Semua dinas prioritas, tanya-jawab, saran</span></div></div>
+    <div class="ph"><div class="bar dark" style="grid-column:7/10"><b>Fase 3 · Uji coba dan serah terima</b><span>Uji bersama Sekda, uji keamanan, pelatihan</span></div></div>
+  </div></div>
+  <div class="grid g4" style="margin-top:14px">
+    <div class="card"><span class="n">Fase 0 selesai jika</span><p>Sekda menyetujui daftar dinas prioritas dan 20-30 pertanyaan uji. Pilihan server disepakati bersama Diskominfo.</p></div>
+    <div class="card"><span class="n">Fase 1 selesai jika</span><p>Sekda membuka layar keuangan di tablet dan melihat serapan 3-4 dinas, lengkap dengan asal datanya.</p></div>
+    <div class="card"><span class="n">Fase 2 selesai jika</span><p>Minimal 8 dari 10 pertanyaan uji dijawab benar di depan Sekda.</p></div>
+    <div class="card"><span class="n">Fase 3 selesai jika</span><p>Sekda menjawab 5 pertanyaan uji sendiri tanpa dibantu, lalu berita acara ditandatangani.</p></div>
+  </div>
+</section>
+
+<section class="panel" id="tim">
+  <div class="split-head" style="margin-bottom:36px">
+    <div class="panel-head" style="margin:0"><p class="eyebrow">Pelaksana pekerjaan</p><h2>Satu penanggung jawab yang memahami seluruh sistem</h2></div>
+    <p class="lead" style="max-width:40ch">Tenaga ahli utama, Pendiri Dar Dev, bekerja dari luar negeri selama masa pengerjaan. Rapat dan presentasi lewat Zoom; pekerjaan tatap muka di Gorontalo ditangani perwakilan lapangan.</p>
+  </div>
+  <div class="tablewrap"><table>
+    <tr><th>Peran</th><th>Dikerjakan oleh</th><th>Bulan</th><th>Tugas utama</th></tr>
+    <tr><td>Pimpinan proyek dan perancang sistem</td><td>Pendiri Dar Dev, jarak jauh</td><td class="num">1-9</td><td>Rancangan aplikasi, jadwal, presentasi ke Sekda lewat Zoom</td></tr>
+    <tr><td>Ahli data</td><td>Pendiri Dar Dev, jarak jauh</td><td class="num">1-8</td><td>Sambungan data dan cara hitung, dengan data contoh atau yang disamarkan</td></tr>
+    <tr><td>Pengembang AI, sistem, dan tampilan</td><td>Pendiri Dar Dev, jarak jauh</td><td class="num">2-8</td><td>Tanya-jawab, saran, perkiraan, layar ringkasan</td></tr>
+    <tr><td>Penguji dan pelatih</td><td>Pendiri Dar Dev, lewat Zoom</td><td class="num">1-9</td><td>Menguji dan memandu pelatihan</td></tr>
+    <tr><td>Perwakilan lapangan</td><td>Prima, tenaga lokal di Gorontalo, paruh waktu</td><td class="num">1-9</td><td>Wawancara dinas, mendampingi pelatihan, dokumen dan tanda tangan</td></tr>
+    <tr><td>Penguji keamanan independen</td><td>BSSN (ITSA) atau penguji independen, diajukan Pemkab</td><td class="num">8</td><td>Uji keamanan sebelum aplikasi dipakai</td></tr>
+  </table></div>
+  <div class="grid g4" style="margin-top:14px">
+    <div class="card"><h3>Data tidak dibawa keluar</h3><p>Pengembangan memakai data contoh atau yang disamarkan. Data asli hanya di server Indonesia.</p></div>
+    <div class="card"><h3>Kode milik Pemkab</h3><p>Disimpan di repositori atas nama Pemkab sejak hari pertama, dengan dokumentasi tiap fase.</p></div>
+    <div class="card"><h3>Kontak tatap muka</h3><p>Prima, perwakilan lapangan di Gorontalo, siap hadir untuk keperluan yang butuh tatap muka.</p></div>
+    <div class="card"><h3>Tenaga pengganti</h3><p>Jika tenaga ahli utama berhalangan lebih dari 2 minggu, Dar Dev menyiapkan pengganti setara tanpa tambahan biaya.</p></div>
+  </div>
+  <div class="panel-head" style="margin:40px 0 16px"><p class="eyebrow">Jam kerja dan hari libur</p></div>
+  <div class="grid g3">
+    <div class="card"><h3>Hari dan jam kerja</h3><p>Developer: Senin-Jumat, 8 jam per hari, 40 jam per minggu. Prima: mengikuti jam kerja kantor Pemkab sesuai jadwal kegiatan.</p></div>
+    <div class="card"><h3>Jam koordinasi wajib</h3><p>09.00-12.00 WITA setiap hari kerja untuk rapat Zoom dan menjawab pesan. Pesan di jam itu ditanggapi paling lama 4 jam.</p></div>
+    <div class="card"><h3>Hari libur dan cuti</h3><p>Libur nasional, cuti bersama, dan hari libur Pemkab. Cuti pribadi developer paling banyak 5 hari, diberitahukan 2 minggu sebelumnya dan diganti di hari lain. Tidak ada bayaran lembur.</p></div>
+  </div>
+  <p class="note">Jika data dinas ternyata berat, jumlah dinas disesuaikan atau jadwal diperpanjang lewat addendum. Kami mohon Pemkab menunjuk satu koordinator di Sekretariat Daerah dan satu penanggung jawab data di tiap dinas.</p>
+</section>
+
+<section class="panel" id="akses">
+  <div class="panel-head"><p class="eyebrow">Lingkup kerja developer</p><h2>Apa yang dibangun, dan apa yang boleh diakses</h2><p class="lead">Semua hasil kerja disimpan di repositori dan akun milik Pemkab. Akses developer dibatasi sejak awal, dicatat, dan dicabut saat serah terima.</p></div>
+  <div class="tablewrap"><table>
+    <tr><th>Yang dibangun developer</th><th>Hasil yang diserahkan</th></tr>
+    <tr><td>Sambungan data dari aplikasi dan file dinas, diperbarui setiap hari</td><td>Kode sambungan, jadwal pembaruan, catatan pembaruan</td></tr>
+    <tr><td>Tempat penyimpanan data dan aturan perapian data</td><td>Struktur penyimpanan, laporan mutu data</td></tr>
+    <tr><td>Kamus data dan cara hitung resmi tiap ukuran</td><td>Kamus data yang disepakati bersama dinas</td></tr>
+    <tr><td>Mesin tanya-jawab yang tersambung ke Claude API, hanya mengirim angka ringkasan</td><td>Kode dan hasil uji 20-30 pertanyaan</td></tr>
+    <tr><td>Mesin saran otomatis dan perkiraan akhir tahun</td><td>Aturan saran yang bisa diubah</td></tr>
+    <tr><td>Layar ringkasan pimpinan dan layar tiap dinas, untuk tablet dan ponsel</td><td>Aplikasi web siap pakai, simpan ke PDF</td></tr>
+    <tr><td>Sistem masuk: hak akses sesuai jabatan, verifikasi dua langkah, catatan akses</td><td>Pengaturan peran dan pengguna awal</td></tr>
+    <tr><td>Pengaturan keamanan: firewall, enkripsi, cadangan data, pemantauan</td><td>Dokumen pengaturan dan hasil uji pemulihan</td></tr>
+    <tr><td>Server uji coba dengan data contoh atau yang disamarkan</td><td>Lingkungan uji coba untuk Diskominfo</td></tr>
+    <tr><td>Dokumentasi dan materi pelatihan</td><td>Panduan pengguna dan petugas, kamus data, prosedur pemulihan, modul</td></tr>
+  </table></div>
+  <p class="note">Tidak dikerjakan developer: mengubah aplikasi dinas yang sudah ada, mengadakan server dan Claude API (oleh Pemkab), uji keamanan independen (BSSN), dan menjamin kebenaran isi data dinas.</p>
+  <div class="grid g3" style="margin-top:24px">
+    <div class="card ok"><h3>Boleh diakses</h3><ul><li>Repositori kode milik Pemkab</li><li>Server pengembangan dan uji coba, berisi data contoh atau yang disamarkan</li><li>Struktur data sistem dinas, tanpa isi data pribadi</li><li>Antarmuka aplikasi dinas, hanya baca, atas izin pemiliknya</li><li>Kunci Claude API khusus uji coba, dengan batas pemakaian</li><li>Log teknis tanpa data pribadi</li><li>Cloudflare dan pemantauan milik Pemkab, peran terbatas</li></ul></div>
+    <div class="card wait"><h3>Dengan izin Diskominfo</h3><ul><li>Masuk server produksi lewat VPN untuk pemasangan atau perbaikan, tanpa mengunduh data</li><li>Melihat angka ringkasan produksi bersama penanggung jawab data</li><li>Memasang versi baru setelah diuji dan disetujui</li></ul><p style="margin-top:6px">Sementara, dan setiap akses tercatat.</p></div>
+    <div class="card dark"><h3>Tidak boleh diakses</h3><ul><li>Data per orang: data pegawai, penerima bantuan</li><li>Menyimpan data asli di komputer pribadi atau di luar Indonesia</li><li>Kata sandi dan akun pengguna Pemkab</li><li>Akun admin utama server dan kunci enkripsi</li><li>Kunci Claude API produksi dan akun pembayaran</li><li>Mengubah atau menghapus catatan akses</li><li>Menulis data di sistem dinas</li><li>Mengirim data mentah ke AI atau pihak lain</li></ul></div>
+  </div>
+</section>
+
+<section class="panel" id="biaya">
+  <div class="panel-head"><p class="eyebrow">Usulan biaya</p><h2>Mulai dengan langkah kecil. Harga akhir disepakati setelah datanya jelas.</h2><p class="lead">Kami belum bisa memberi harga pasti sebelum melihat kondisi data di tiap dinas. Karena itu kami usulkan dua langkah, supaya Pemkab tidak membayar untuk sesuatu yang belum jelas.</p></div>
+  <div class="grid g2">
+    <div class="price dark"><p class="eyebrow">Langkah 1 · Fase 0 · harga pasti</p><p class="big">Rp40 juta</p><p>Rp40.001.350, belum termasuk pajak:<br>Jasa developer Rp27.383.100 (22 hari kerja)<br>Jasa perwakilan lapangan Rp8.497.230 (15 hari)<br>Operasional Rp4.121.020, sesuai harga beli<br>Dibayar setelah hasil Fase 0 diterima.</p></div>
+    <div class="price"><p class="eyebrow">Langkah 2 · Fase 1-3 · perkiraan</p><p class="big">Rp245-315 juta</p><p>Belum termasuk pajak. Nilai tengah Rp268.323.400:<br>Jasa developer Rp219.064.800 (176 hari kerja)<br>Jasa perwakilan lapangan Rp19.422.240 (36 hari)<br>Operasional Rp29.836.360, sesuai harga beli<br>Harga pasti disepakati setelah Fase 0.</p></div>
+  </div>
+  <div class="terms">
+    <div><b>35%</b><span>dari harga Langkah 2, setelah Fase 1 diterima</span></div>
+    <div><b>40%</b><span>dari harga Langkah 2, setelah Fase 2 diterima</span></div>
+    <div><b>25%</b><span>dari harga Langkah 2, setelah serah terima</span></div>
+  </div>
+  <p class="note">Pada nilai tengah, total proyek Rp308.324.750 selama 9 bulan, belum termasuk pajak, dihitung dari kebutuhan nyata tanpa markup. Kebutuhan operasional ditagih sesuai harga beli dengan bukti, tanpa tambahan apa pun. Penyedia saat ini perorangan: jika bukan Pengusaha Kena Pajak, tidak ada PPN dan PPh dipotong Pemkab; jika kontrak lewat badan usaha berstatus PKP, PPN 11% ditambahkan. Rapat dan presentasi lewat Zoom; wawancara dinas dan pelatihan tatap muka lewat perwakilan lapangan.</p>
+
+  <div class="panel-head" style="margin:48px 0 20px"><p class="eyebrow">Ke mana uangnya</p><h3 style="font-size:1.5rem;font-weight:400">Bayaran jasa dan kebutuhan operasional, per bulan dan selama 9 bulan</h3></div>
+  <div class="tablewrap"><table>
+    <tr><th>Pos</th><th>Isinya</th><th>Per bulan</th><th>Selama 9 bulan</th></tr>
+    <tr><td colspan="4"><b>A. Bayaran jasa</b></td></tr>
+    <tr><td>Developer</td><td>1 orang penuh waktu, tarif minimal INKINDO 2024 untuk Gorontalo, sudah termasuk overhead</td><td class="num">Rp27.383.100</td><td class="num">Rp246.447.900</td></tr>
+    <tr><td>Perwakilan lapangan (Prima)</td><td>51 hari kerja, tarif fasilitator INKINDO 2024 untuk Gorontalo</td><td class="num">rata-rata Rp3,10 juta</td><td class="num">Rp27.919.470</td></tr>
+    <tr><td><b>Jumlah bayaran jasa</b></td><td></td><td class="num"><b>rata-rata Rp30,49 juta</b></td><td class="num"><b>Rp274.367.370</b></td></tr>
+    <tr><td colspan="4"><b>B. Kebutuhan operasional</b></td></tr>
+    <tr><td>Lisensi Claude Max</td><td>Alat pengembangan khusus proyek ini, Max 5x US$100</td><td class="num">Rp1.800.000</td><td class="num">Rp16.200.000</td></tr>
+    <tr><td>Zoom Pro</td><td>Rapat dan presentasi, US$16,99</td><td class="num">Rp305.820</td><td class="num">Rp2.752.380</td></tr>
+    <tr><td>Paket data perwakilan lapangan</td><td>Harga pasar</td><td class="num">Rp100.000</td><td class="num">Rp900.000</td></tr>
+    <tr><td>Laporan bulanan</td><td>Patokan INKINDO, 2 eksemplar</td><td class="num">Rp178.800</td><td class="num">Rp1.609.200</td></tr>
+    <tr><td>Transportasi perwakilan lapangan</td><td>68 kunjungan × Rp50.000, sesuai kuitansi</td><td class="num">sesuai kegiatan</td><td class="num">Rp3.400.000</td></tr>
+    <tr><td>Pelatihan</td><td>Kudapan 140 peserta, 30 modul, 30 kartu panduan</td><td class="num">sesuai kegiatan</td><td class="num">Rp4.000.000</td></tr>
+    <tr><td>Laporan fase dan panduan</td><td>Patokan INKINDO</td><td class="num">sesuai kegiatan</td><td class="num">Rp5.095.800</td></tr>
+    <tr><td><b>Jumlah kebutuhan operasional</b></td><td></td><td class="num"><b>rata-rata Rp3,77 juta</b></td><td class="num"><b>Rp33.957.380</b></td></tr>
+    <tr><td><b>Total, belum termasuk pajak</b></td><td></td><td class="num"><b>rata-rata Rp34,26 juta</b></td><td class="num"><b>Rp308.324.750</b></td></tr>
+  </table></div>
+  <p class="note">Tidak ditagih: alat kerja dan internet tenaga ahli (sudah termasuk overhead; hanya lisensi khusus proyek yang ditagih), repositori kode (gratis), dan uji keamanan (diajukan Pemkab ke BSSN atau dibayar Pemkab langsung). Rincian per pos dengan dasar harga ada di Lampiran B dokumen penawaran. Biaya operasional dibayar sesuai pengeluaran nyata dengan bukti.</p>
+
+  <div class="panel-head" style="margin:48px 0 20px"><p class="eyebrow">Kerja developer</p><h3 style="font-size:1.5rem;font-weight:400">Apa yang dibayar dari jasa developer: 198 hari kerja, termasuk kerja pemikiran</h3><p class="lead">Kajian, perancangan, dan penyusunan cara hitung adalah kerja yang dihitung harinya dan dibuktikan dengan dokumen, sama seperti menulis kode. Tarif harian setara Rp1.244.686.</p></div>
+  <div class="tablewrap"><table>
+    <tr><th>Fase</th><th>Kegiatan developer (hari kerja)</th><th>Hari</th><th>Nilai</th></tr>
+    <tr><td>0 · bulan 1</td><td>Kajian kebutuhan pimpinan (6), kajian data dan aplikasi dinas (6), rancangan arsitektur, keamanan, server, dan model AI (6), rencana rinci dan pertanyaan uji (4)</td><td class="num">22</td><td class="num">Rp27.383.100</td></tr>
+    <tr><td>1 · bulan 2-4</td><td>Penyiapan server dan repositori (8), rancangan tampilan diuji ke Sekda (8), penyimpanan dan perapian data (14), sambungan data 3-4 dinas (18), kamus data dan cara hitung (8), hak akses dan catatan akses (6), layar keuangan pertama (4)</td><td class="num">66</td><td class="num">Rp82.149.300</td></tr>
+    <tr><td>2 · bulan 5-7</td><td>Sambungan data dinas ke-5 sampai ke-12 (20), mesin tanya-jawab dan Claude API (18), saran otomatis dan perkiraan (10), layar pimpinan dan dinas (12), uji pertanyaan dan perbaikan (6)</td><td class="num">66</td><td class="num">Rp82.149.300</td></tr>
+    <tr><td>3 · bulan 8-9</td><td>Uji coba bersama Sekda (10), pendampingan uji keamanan (8), cadangan data dan uji pemulihan (6), dokumentasi (10), pelatihan lewat Zoom (6), pemasangan dan serah terima (4)</td><td class="num">44</td><td class="num">Rp54.766.200</td></tr>
+    <tr><td><b>Total</b></td><td></td><td class="num"><b>198</b></td><td class="num"><b>Rp246.447.900</b></td></tr>
+  </table></div>
+  <p class="note">Bukti tiap kegiatan (notulen, dokumen rancangan, riwayat kode di repositori Pemkab, hasil uji, berita acara) dilampirkan dalam laporan bulanan. Rincian lengkapnya ada di Lampiran B dokumen penawaran.</p>
+
+  <div class="panel-head" style="margin:48px 0 20px"><p class="eyebrow">Server, keamanan, dan AI</p><h3 style="font-size:1.5rem;font-weight:400">Biaya berulang yang dibayar Pemkab selama aplikasi dipakai</h3><p class="lead">Claude Max dan Zoom berhenti saat proyek selesai dan sudah termasuk harga pembangunan. Server, Cloudflare Pro, dan Claude API berjalan terus selama aplikasi dipakai, jadi perlu dianggarkan setiap tahun.</p></div>
+  <div class="tablewrap"><table>
+    <tr><th>Biaya</th><th>Per bulan</th><th>Selama 9 bulan proyek</th><th>Per tahun setelah proyek</th><th>Keterangan</th></tr>
+    <tr><td>Server dan cadangan data</td><td class="num">Rp3,4-8,8 juta</td><td class="num">Rp31-79 juta</td><td class="num">Rp41,3-105,6 juta</td><td>2 server aplikasi, database utama dan cadangan, server uji coba, cadangan 2 TB. Di Diskominfo atau PDN mengikuti aturan di sana</td></tr>
+    <tr><td>Firewall aplikasi web dan DDoS</td><td class="num">Rp450 ribu</td><td class="num">Rp4,05 juta</td><td class="num">Rp4,32 juta</td><td>Cloudflare Pro, US$25 per bulan; setelah proyek dibayar tahunan US$240</td></tr>
+    <tr><td>Claude API (Claude Opus 5.5) untuk aplikasi</td><td class="num">Rp0,6-6 juta</td><td class="num">Rp5,4-54 juta</td><td class="num">Rp7,2-72 juta</td><td>Sekitar US$0,11 per pertanyaan, untuk 300-3.000 pertanyaan per bulan</td></tr>
+    <tr><td><b>Jumlah biaya berulang wajib</b></td><td class="num"><b>Rp4,5-15,3 juta</b></td><td class="num"><b>Rp40,4-137,3 juta</b></td><td class="num"><b>Rp52,8-181,9 juta</b></td><td>Dibayar Pemkab langsung ke penyedia</td></tr>
+    <tr><td>Perawatan oleh Dar Dev (pilihan)</td><td class="num">Rp5,48 juta</td><td class="num">Tidak berlaku</td><td class="num">Rp65,7 juta</td><td>Mulai setelah 3 bulan pendampingan, sekitar 4,4 hari kerja per bulan</td></tr>
+    <tr><td>Pengembangan lanjutan</td><td class="num">Sesuai permintaan</td><td class="num">-</td><td class="num">-</td><td>Tambahan dinas atau fitur baru</td></tr>
+  </table></div>
+  <p class="note">Kolom 9 bulan adalah batas atas; selama pembangunan pemakaian server dan Claude API lebih rendah. Harga layanan luar negeri mengikuti kurs saat pembayaran. Semua angka sebelum pajak, dipastikan dengan penawaran 2-3 penyedia di Fase 0. Selama pembangunan pun biaya ini dibayar Pemkab langsung, atau lewat kami sesuai pemakaian nyata dengan invoice penyedia.</p>
+</section>
+
+<section class="panel" id="sepakat">
+  <div class="panel-head"><p class="eyebrow">Hal yang perlu disepakati</p><h2>Yang kita periksa bersama di Fase 0</h2></div>
+  <div class="grid g4">
+    <div class="card"><h3>Jalur data pemda bisa dipakai</h3><p>Diperiksa paling awal. Hasilnya menentukan harga Langkah 2.</p></div>
+    <div class="card"><h3>Data dinas tidak dicatat manual</h3><p>Jika banyak yang manual, waktu dan biaya bertambah, atau jumlah dinas dikurangi.</p></div>
+    <div class="card"><h3>Penanggung jawab data di tiap dinas</h3><p>Menanggapi permintaan data paling lama 5 hari kerja.</p></div>
+    <div class="card"><h3>Siapa yang merawat setelah selesai</h3><p>Diskominfo sendiri, atau kontrak perawatan dengan Dar Dev.</p></div>
+  </div>
+</section>
+
+<section class="panel" id="perawatan">
+  <div class="panel-head"><p class="eyebrow">Setelah serah terima</p><h2>Pemkab bisa menjalankan aplikasi sendiri</h2></div>
+  <div class="grid g3">
+    <div class="card"><h3>Pelatihan</h3><ul><li>Sekda dan Bupati: 2 sesi, masing-masing 90 menit</li><li>ASN dan kepala dinas: bergiliran per kelompok</li><li>Petugas Diskominfo: menjaga data dan pengguna</li></ul></div>
+    <div class="card"><h3>Serah terima</h3><ul><li>Kode program, pengaturan, dan akses server</li><li>Panduan pengguna dan panduan petugas</li><li>Pendampingan 3 bulan, sudah termasuk harga</li></ul></div>
+    <div class="card"><h3>Perawatan, pilih salah satu</h3><ul><li>Dijalankan sendiri oleh Diskominfo</li><li>Dirawat Dar Dev: sekitar Rp5,5 juta per bulan, ditanggapi dalam 1 hari kerja</li></ul></div>
+  </div>
+</section>
+
+<section class="panel" id="model-ai">
+  <div class="panel-head"><p class="eyebrow">Pilihan model AI</p><h2>Saran dari AI terbaik, data tetap di Indonesia</h2><p class="lead">AI yang paling pintar saat ini hanya bisa dipakai lewat layanan penyedianya, dan servernya umumnya di luar negeri. Karena itu kami mengusulkan cara gabungan.</p></div>
+  <div class="grid g3">
+    <div class="card"><span class="n">Pilihan A</span><h3>Model terbaik lewat layanan penyedia</h3><p>Kualitas saran paling tinggi. Tetapi data ringkasan dikirim ke luar negeri.</p></div>
+    <div class="card"><span class="n">Pilihan B</span><h3>Model terbuka di server sendiri</h3><p>Tidak ada data yang keluar. Tetapi kualitasnya lebih rendah dan butuh server GPU yang mahal.</p></div>
+    <div class="card dark"><span class="n">Pilihan C · usulan kami</span><h3>Gabungan</h3><p>Semua data dan perhitungan tetap di server Indonesia. Model terbaik hanya menerima pertanyaan dan angka ringkasan, lalu menyusun saran dengan bahasa yang mudah dipahami. Data per orang tidak pernah dikirim.</p></div>
+  </div>
+  <p class="note">Aplikasi dibuat agar modelnya bisa diganti. Jika nanti aturan mewajibkan model dalam negeri, Pemkab cukup beralih tanpa membangun ulang. Penggunaan model dari luar negeri tetap menunggu persetujuan Diskominfo di Fase 0, sesuai UU Pelindungan Data Pribadi.</p>
+</section>
+
+<section class="panel" id="server">
+  <div class="panel-head"><p class="eyebrow">Server dan keamanan</p><h2>Server atas nama Pemkab, keamanan berlapis</h2><p class="lead">Server sebaiknya dikontrak langsung oleh Pemkab, supaya data dan asetnya milik daerah. Kami menyusun spesifikasinya, memasang aplikasi, dan merawatnya.</p></div>
+  <div class="grid g3">
+    <div class="card"><span class="n">Pilihan 1</span><h3>Pusat data Diskominfo atau PDN</h3><p>Jika kapasitas dan petugas jaganya memadai.</p></div>
+    <div class="card"><span class="n">Pilihan 2</span><h3>Cloud privat di pusat data Indonesia</h3><p>Dibeli Pemkab lewat e-katalog, di pusat data bersertifikat ISO 27001.</p></div>
+    <div class="card"><span class="n">Pilihan 3 · sementara</span><h3>Server sewa selama pembangunan</h3><p>Ditagih sesuai pemakaian nyata dengan invoice penyedia, lalu dipindahkan ke pilihan 1 atau 2.</p></div>
+  </div>
+  <div class="tablewrap" style="margin-top:14px"><table>
+    <tr><th>Komponen</th><th>Spesifikasi awal</th><th>Fungsinya</th></tr>
+    <tr><td>Server aplikasi</td><td>2 unit, 4 vCPU, 16 GB RAM</td><td>Jika satu mati, yang lain tetap jalan</td></tr>
+    <tr><td>Server database</td><td>1 utama + 1 cadangan, 8 vCPU, 32 GB RAM, SSD 1 TB</td><td>Data aman walau satu server rusak</td></tr>
+    <tr><td>Server uji coba</td><td>1 unit, 2 vCPU, 8 GB RAM</td><td>Perubahan diuji dulu sebelum dipakai pimpinan</td></tr>
+    <tr><td>Cadangan data</td><td>2 TB terenkripsi, di kota lain di Indonesia</td><td>Pulih jika pusat data utama bermasalah</td></tr>
+  </table></div>
+  <p class="note">Ukurannya disesuaikan dengan jumlah pengguna yang puluhan orang, supaya tidak boros anggaran. Kapasitas bisa dinaikkan kapan saja tanpa membangun ulang.</p>
+  <div class="grid g3" style="margin-top:28px">
+    <div class="card"><h3>Pintu masuk</h3><p>Firewall jaringan, firewall aplikasi web, dan perlindungan dari serangan banjir lalu lintas.</p></div>
+    <div class="card"><h3>Akses</h3><p>Semua pengguna masuk dengan verifikasi dua langkah. Akses admin ke server hanya lewat VPN.</p></div>
+    <div class="card"><h3>Data</h3><p>Terenkripsi saat disimpan dan dikirim. Kunci enkripsi disimpan terpisah.</p></div>
+    <div class="card"><h3>Pengawasan</h3><p>Pemantauan serangan 24 jam, catatan akses yang tidak bisa diubah, dan pemindaian celah setiap bulan.</p></div>
+    <div class="card"><h3>Pemulihan</h3><p>Cadangan harian dengan aturan 3-2-1 dan uji pemulihan sebelum serah terima.</p></div>
+    <div class="card"><h3>Pengujian</h3><p>Uji penetrasi oleh BSSN (ITSA) atau penguji independen yang diajukan Pemkab, lalu uji ulang setelah perbaikan.</p></div>
+  </div>
+</section>
+
+<section class="panel" id="akuntabel">
+  <div class="panel-head"><p class="eyebrow">Tata kelola dan akuntabilitas</p><h2>Setiap rupiah bisa dipertanggungjawabkan</h2><p class="lead">Kami ingin proyek ini aman bagi Pemkab dan bagi kami, termasuk saat diperiksa auditor.</p></div>
+  <div class="grid g3">
+    <div class="card"><h3>Harga dengan dasar yang jelas</h3><p>Rincian biaya per tenaga ahli mengacu pedoman tarif resmi, ditambah perbandingan penawaran untuk server dan layanan.</p></div>
+    <div class="card"><h3>Bayar sesuai hasil</h3><p>Pembayaran per fase setelah berita acara serah terima, dengan kriteria penerimaan yang tertulis.</p></div>
+    <div class="card"><h3>Server, AI, dan uji keamanan dibayar langsung</h3><p>Pemkab membayar langsung ke penyedia sesuai pemakaian nyata, tanpa melalui kami.</p></div>
+    <div class="card"><h3>Bukti kerja setiap bulan</h3><p>Laporan kemajuan, catatan jam kerja tenaga ahli, dan riwayat pekerjaan diserahkan dan diparaf Pemkab.</p></div>
+    <div class="card"><h3>Perubahan selalu tertulis</h3><p>Setiap perubahan lingkup dibuat lewat addendum resmi, bukan kesepakatan lisan.</p></div>
+    <div class="card"><h3>Komitmen integritas</h3><p>Kontrak dan pembayaran sesuai bentuk penyedia yang disepakati, ke rekening atas nama penyedia, dan taat pajak. Tidak ada hadiah atau fee untuk pejabat. Pekerjaan berbayar baru dimulai setelah kontrak terbit; presentasi ini tidak dipungut biaya. Pelaksana dan perwakilan lapangan bukan ASN dan tidak terlibat dalam pengadaan.</p></div>
+  </div>
+  <div class="panel-head" style="margin:48px 0 20px"><p class="eyebrow">Usulan ketentuan dalam kontrak</p><h3 style="font-size:1.5rem;font-weight:400">Kami usulkan dicantumkan dalam syarat khusus kontrak</h3></div>
+  <div class="tablewrap"><table>
+    <tr><th>Ketentuan</th><th>Isinya</th></tr>
+    <tr><td>Hasil kerja tiap fase</td><td>Ditulis jelas, termasuk jasa tenaga ahli: rancangan, kode program, pengujian, dan pelatihan. Semuanya dinilai sebagai hasil kerja yang punya nilai.</td></tr>
+    <tr><td>Penetapan HPS</td><td>Harga Perkiraan Sendiri ditetapkan oleh PPK Pemkab. Dar Dev hanya menyampaikan penawaran resmi beserta rincian biayanya.</td></tr>
+    <tr><td>Rincian biaya</td><td>Rincian per tenaga ahli dan dasar tarifnya dilampirkan dalam penawaran resmi.</td></tr>
+    <tr><td>Server dan layanan AI</td><td>Dikontrak dan dibayar langsung oleh Pemkab kepada penyedia, sesuai pemakaian nyata.</td></tr>
+    <tr><td>Tanggung jawab atas data</td><td>Kebenaran isi data tetap tanggung jawab dinas pemilik data. Tanggung jawab kami adalah mengolah dan menampilkannya sesuai cara hitung yang disepakati.</td></tr>
+    <tr><td>Penggunaan alat bantu AI dalam pengembangan</td><td>Developer boleh memakai alat bantu AI, misalnya Claude Max dan Claude Code, untuk merancang, menulis kode, menguji, dan menyusun dokumen. Syaratnya: tidak ada data asli atau data pribadi yang dimasukkan, semua hasil diperiksa dan diuji serta menjadi tanggung jawab penuh developer, dan alat yang dipakai disebutkan di laporan bulanan. Pemakaian AI tidak mengurangi nilai jasa, karena nilai jasa dihitung dari hasil kerja yang diterima dan hari kerja yang disepakati.</td></tr>
+    <tr><td>Hak cipta</td><td>Kode program, dokumen, dan panduan diserahkan kepada Pemkab saat serah terima, termasuk bagian yang dibuat dengan bantuan AI.</td></tr>
+    <tr><td>Perubahan</td><td>Perubahan lingkup, jadwal, atau harga hanya lewat addendum tertulis.</td></tr>
+  </table></div>
+  <p class="note">Ketentuan ini usulan kami dan akan disesuaikan dengan format kontrak standar yang disusun PPK.</p>
+</section>
+
+<section class="closing">
+  <p class="eyebrow" style="color:var(--ink)">Langkah berikutnya</p>
+  <h2>Kita mulai dari Fase 0, satu bulan.</h2>
+  <p>Di akhir bulan itu, Pemkab menerima gambaran lengkap kondisi data tiap dinas, pilihan server yang disepakati bersama Diskominfo, dan harga pasti untuk Fase 1-3. Usulan biaya ini berlaku 60 hari.</p>
+  <p class="who">Hormat kami, Dar Dev</p>
+</section>
+
+<footer><span>Pandu Data Gorontalo · Penawaran Dar Dev untuk Pemerintah Kabupaten Gorontalo</span><span>Oktober 2026</span></footer>
+
+</div>
+
+<script>
+(function(){
+  var D=[
+    {q:"OPD mana yang serapan anggarannya paling rendah dibanding target triwulan ini?",
+     type:"serapan",target:75,
+     rows:[["Dinas Pekerjaan Umum",48],["Dinas Pertanian",55],["Dinas Kesehatan",62],["Dinas Perhubungan",69],["Dinas Pendidikan",71]],
+     title:"Serapan belanja per OPD, triwulan III",
+     sum:"Dinas Pekerjaan Umum paling rendah: 48% terhadap target 75%, selisih 27 poin. Dinas Pertanian dan Dinas Kesehatan juga tertinggal lebih dari 10 poin.",
+     rec:{t:"Serapan Dinas Pekerjaan Umum 27 poin di bawah target triwulan.",b:"Realisasi 48% dari pagu belanja, target triwulan 75%.",a:"Minta Dinas PU memaparkan kendala paket pekerjaan yang belum berjalan.",k:"Tinggi"},
+     src:"Sumber: realisasi belanja OPD (contoh) · diperbarui 23 Okt 2026 06.00"},
+    {q:"Bagaimana realisasi PAD per jenis dibanding tahun lalu?",
+     type:"pad",
+     rows:[["Pajak daerah",42.0,45.5],["Retribusi daerah",12.0,10.4],["Hasil kekayaan daerah",6.0,6.3],["Lain-lain PAD",14.0,15.1]],
+     title:"Realisasi PAD sampai September, Rp miliar",
+     sum:"Total PAD naik dari 74,0 menjadi 77,3 miliar rupiah (+4,5%). Pajak daerah menjadi penopang utama, sedangkan retribusi turun 13% dibanding tahun lalu.",
+     rec:{t:"Retribusi daerah turun 13% terhadap periode yang sama tahun lalu.",b:"Realisasi 10,4 miliar rupiah dibanding 12,0 miliar rupiah pada 2025.",a:"Tinjau penagihan dan tarif pada jenis retribusi yang turun paling dalam.",k:"Sedang, karena data dua OPD pengelola retribusi terlambat masuk"},
+     src:"Sumber: laporan pendapatan daerah (contoh) · diperbarui 23 Okt 2026 06.00"},
+    {q:"Ringkas kondisi keuangan daerah untuk rapat pimpinan besok.",
+     type:"ringkas",
+     kpis:[["68%","Pendapatan terhadap target tahunan"],["61%","Realisasi belanja terhadap pagu"],["62%","Rata-rata serapan OPD"],["93%","Proyeksi serapan akhir tahun"],["7 dari 10","Program prioritas sesuai jadwal"],["4.215","ASN aktif, 38 pensiun tahun ini"]],
+     title:"Ringkasan keuangan daerah",
+     sum:"Pendapatan 68% dari target dan belanja 61% dari pagu. Jika pola saat ini berlanjut, serapan akhir tahun diperkirakan 93%, dengan risiko di tiga OPD yang masih di bawah 60%. Tiga dari sepuluh program prioritas tertinggal dari jadwal.",
+     rec:{t:"Proyeksi serapan akhir tahun 93%, di bawah target 95%.",b:"Tren serapan bulanan Januari sampai September.",a:"Prioritaskan percepatan di tiga OPD yang serapannya di bawah 60%.",k:"Sedang"},
+     src:"Sumber: gabungan data keuangan (contoh) · diperbarui 23 Okt 2026 06.00"}
+  ];
+  var qs=document.getElementById("qs"),ans=document.getElementById("ans");
+  function fmt(n){return String(n).replace(".",",")}
+  function chart(d){
+    var h='';
+    if(d.type==="serapan"){
+      h+='<div class="legend"><span><i style="background:var(--ink)"></i>Realisasi</span><span><i style="background:var(--bad)"></i>Target '+d.target+'%</span></div>';
+      d.rows.forEach(function(r){
+        var low=r[1]<d.target-10;
+        h+='<div class="row"><span class="nm">'+r[0]+'</span><div class="track"><div class="b" style="width:'+r[1]+'%"></div><div class="t" style="left:'+d.target+'%"></div></div><span class="v'+(low?' low':'')+'">'+r[1]+'%</span></div>';
+      });
+    }else if(d.type==="pad"){
+      var max=50;
+      h+='<div class="legend"><span><i style="background:#BDBBB4"></i>2025</span><span><i style="background:var(--ink)"></i>2026</span></div>';
+      d.rows.forEach(function(r){
+        h+='<div class="row"><span class="nm">'+r[0]+'</span><div class="track pair"><div class="b1" style="width:'+(r[1]/max*100)+'%"></div><div class="b2" style="width:'+(r[2]/max*100)+'%"></div></div><span class="v'+(r[2]<r[1]?' low':'')+'">'+fmt(r[2])+'</span></div>';
+      });
+    }else{
+      h+='<div class="kpis">';
+      d.kpis.forEach(function(k){h+='<div class="kpi"><b>'+k[0]+'</b><span>'+k[1]+'</span></div>'});
+      h+='</div>';
+    }
+    return h;
+  }
+  function show(i){
+    var d=D[i];
+    Array.prototype.forEach.call(qs.children,function(b,j){b.setAttribute("aria-pressed",j===i?"true":"false")});
+    ans.innerHTML='<div><h3>'+d.title+'</h3><p class="sum">'+d.sum+'</p>'+chart(d)+'<p class="meta">'+d.src+'</p></div>'+
+      '<div class="rec"><span class="tag">Saran, bukan keputusan · tidak dijalankan otomatis</span><dl>'+
+      '<dt>Yang ditemukan</dt><dd>'+d.rec.t+'</dd><dt>Buktinya</dt><dd>'+d.rec.b+'</dd><dt>Saran tindakan</dt><dd>'+d.rec.a+'</dd><dt>Seberapa yakin</dt><dd>'+d.rec.k+'</dd></dl></div>';
+  }
+  D.forEach(function(d,i){
+    var b=document.createElement("button");
+    b.type="button";b.id="q"+i;b.textContent=d.q;
+    b.addEventListener("click",function(){show(i)});
+    qs.appendChild(b);
+  });
+  show(0);
+})();
+</script>
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var feats=document.querySelectorAll(".feat");
+  var chatVisible=false;
+  function fmt(n){return n>=1000?n.toLocaleString("id-ID"):String(n)}
+  function countUp(root){
+    root.querySelectorAll("[data-count]").forEach(function(el){
+      var end=+el.getAttribute("data-count"),suf=el.getAttribute("data-suf")||"",t0=null;
+      if(reduce){el.textContent=fmt(end)+suf;return}
+      function step(t){if(!t0)t0=t;var p=Math.min((t-t0)/900,1),e=1-Math.pow(1-p,3);el.textContent=fmt(Math.round(end*e))+suf;if(p<1)requestAnimationFrame(step)}
+      requestAnimationFrame(step);
+    });
+  }
+  function play(el){el.classList.remove("play");void el.offsetWidth;el.classList.add("play");countUp(el)}
+  if("IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.target.id==="f-chat")chatVisible=e.isIntersecting;
+      if(e.isIntersecting){play(e.target)}else{e.target.classList.remove("play")}
+    })},{threshold:.35});
+    feats.forEach(function(f){io.observe(f)});
+  }
+  if(reduce)return;
+
+  var msgs=document.getElementById("chatMsgs"),input=document.getElementById("chatIn");
+  var items=[
+    {q:"OPD mana yang serapannya paling rendah triwulan ini?",text:"Dinas PU paling rendah: 48% dari target 75%.",bars:[["Dinas PU",48,1,"48%"],["Pertanian",55,1,"55%"],["Kesehatan",62,1,"62%"]],src:"Sumber: realisasi belanja OPD"},
+    {q:"Bagaimana PAD dibanding tahun lalu?",text:"PAD naik 4,5% dari tahun lalu. Retribusi turun 13%.",bars:[["Pajak",91,0,"45,5"],["Retribusi",21,1,"10,4"],["Lain-lain",30,0,"15,1"]],src:"Sumber: pendapatan daerah · Rp miliar"},
+    {q:"Berapa penerima bantuan sosial tahun 2019?",warn:true,text:"Data belum cukup. Data penerima bantuan tahun 2019 belum masuk ke sistem, jadi aplikasi tidak menebak.",src:"Saran: minta dinas terkait mengirim data 2019"}
+  ];
+  function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+  function waitVisible(){return new Promise(function(r){(function c(){if(chatVisible&&!document.hidden)r();else setTimeout(c,300)})()})}
+  function add(html,cls){var d=document.createElement("div");d.className=cls+" new";d.innerHTML=html;msgs.appendChild(d);return d}
+  function answer(it){
+    var h="<span>"+it.text+"</span>";
+    (it.bars||[]).forEach(function(b,i){h+='<div class="mbar"><span>'+b[0]+'</span><span class="tr"><i style="width:'+b[1]+'%;--d:'+(.2+i*.12)+'s"></i></span><span'+(b[2]?' class="low"':'')+'>'+b[3]+'</span></div>'});
+    h+="<small>"+it.src+"</small>";
+    return h;
+  }
+  (async function run(){
+    var i=1;
+    await sleep(3500);
+    while(true){
+      await waitVisible();
+      var it=items[i%items.length];
+      input.textContent="";input.classList.add("on");
+      for(var c=0;c<it.q.length;c++){input.textContent+=it.q[c];await sleep(32)}
+      await sleep(350);
+      input.textContent="Ketik pertanyaan...";input.classList.remove("on");
+      msgs.innerHTML="";
+      add(it.q.replace(/</g,"&lt;"),"bu");
+      await sleep(350);
+      var ty=add("<i></i><i></i><i></i>","typing");
+      await sleep(900);
+      ty.remove();
+      add(answer(it),"ba"+(it.warn?" warn":""));
+      await sleep(4500);
+      i++;
+    }
+  })();
+})();
+</script>
+</body>
+</html>
